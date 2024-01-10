@@ -27,6 +27,7 @@
 }
 
 .right-nav-part{
+    transform: translateY(-4px);
     display: flex;
     gap: 20%;
     justify-content: space-between;
@@ -51,13 +52,13 @@ text-decoration: underline;
 
 @media screen and (max-width: 1380px){
     .whole-nav{
-        padding: 0 15%;
+        padding: 0 15% 0 10%;
     }
 
     
 }
 
-@media screen and (max-width: 700px){
+@media screen and (max-width: 1000px){
 .whole-nav{
     padding: 0 5%;
 }
@@ -66,12 +67,22 @@ text-decoration: underline;
     gap: 20px;
 }
 
-.demo-nav{
-    display: none;
-}
+
 
 } 
 
+
+@media screen and (max-width: 600px){
+
+    .demo-nav{
+        display: none;
+    }
+
+    .left-nav-part img{
+        height: 90px;
+        width: auto;
+    }
+}
     
 
 

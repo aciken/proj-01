@@ -8,6 +8,18 @@ export function Nav() {
         pricingSection.scrollIntoView({ behavior: 'smooth' });
     };
 
+    const handleScrollToTools = () => {
+        const toolsSection = document.querySelector('.tools');
+        toolsSection.scrollIntoView({ behavior: 'smooth' });
+
+    }
+
+    const handleScrollToQuestions = () => {
+        const questionsSection = document.querySelector('.questions');
+        questionsSection.scrollIntoView({ behavior: 'smooth' });
+
+    }
+
     return (
         <div className="whole-nav">
             <a href="#" className="left-nav-part">
@@ -15,8 +27,9 @@ export function Nav() {
             </a>
             <div className="right-nav-part">
                 <a href="#" onClick={handleScrollToPricing}>Pricing</a>
-                <a href="#" className='demo-nav'>Demo</a>
-                <a href="#">Next</a>
+                <a href="#" onClick={handleScrollToTools}>Tools</a>
+                <a href="#" onClick={handleScrollToQuestions} className='demo-nav'>Questions</a>
+                <a href="#">Login</a>
             </div>
         </div>
     )
