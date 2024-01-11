@@ -26,9 +26,9 @@ export function Nav() {
                 <img src={logo} alt="Logo" />
             </a>
             <div className="right-nav-part">
-                <a href="#" onClick={handleScrollToPricing}>Pricing</a>
                 <a href="#" onClick={handleScrollToTools}>Tools</a>
-                <a href="#" onClick={handleScrollToQuestions} className='demo-nav'>Questions</a>
+                <a href="#" onClick={handleScrollToQuestions} className='demo-nav'>FAQ</a>
+                <a href="#" onClick={handleScrollToPricing}>Pricing</a>
                 <a href="#">Login</a>
             </div>
         </div>

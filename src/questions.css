@@ -4,11 +4,14 @@
 }
 
 .questions{
-    height: 100vh;
-    background-color: rgb(37, 40, 196);
+    height: fit-content;
+    min-height:100vh ;
+    background-color: #ffecd7;
         display: flex;
     flex-direction: column;
     justify-content: center;
+    gap: 80px;
+    padding: 5% 0;
 }
 
 .question-list{
@@ -21,13 +24,31 @@
 
     }
 
+    .question-header{
+        display: flex;
+        flex-direction:column; 
+        justify-content: center;
+        align-items: center;
+        font-family: 'Roboto-Regular';
+        color: #102877;
+        font-size: 1.5rem;
+    }
+
+
+    .question-header p{
+        font-size: 1.2rem;
+    }
+
+    .question-header p a{
+        color: #102877;
+    }
 
 
 
 ul li{
     list-style: none;
     padding: 10px;
-    background-color: white;
+    background-color: #ffecd7;
     width: 100%;
     text-align: center;
     font-family: 'Roboto-Regular';
@@ -35,15 +56,76 @@ ul li{
     color:rgb(37, 40, 196);
     cursor: pointer;
     border-radius: 10px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 ul li a{
 display: flex;
 justify-content: space-between;
-    background-color: white;
+    background-color: #ffecd7;
     text-decoration: none;
-    color:rgb(37, 40, 196);
+    color:#183183;
     font-size: 1.2rem;
     font-family: 'Roboto-Regular';
+
+}
+
+.under-text{
+    line-height: 1.8rem;
+    animation: slideUp 100ms  ease-in-out forwards;
+    display: none;
+
+}
+
+.under-text.clicked {
+    padding-top: 3px;
+    display: block;
+    border-top: 1px solid rgb(163, 140, 140);
+    animation: slideDown 200ms ease-in-out forwards;
+    color:rgb(25, 27, 156);
+}
+
+@keyframes slideDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+
+
+@media screen and (max-width: 1380px){
+
+    .question-list{
+        padding: 0 30%;
+    }
+
+    
+}
+
+@media screen and (max-width: 1000px) {
+    
+    .question-list{
+        padding: 0 20%;
+    }
+}
+
+@media screen and (max-width: 610px) {
+    
+    .question-list{
+        padding: 0 10%;
+    }
+
+    .question-header{
+        text-align: center;
+        font-size: 1.3rem;
+    }
 
 }

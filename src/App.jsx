@@ -10,9 +10,9 @@ export function App() {
     <div>
   <Nav />
   <Hero />
-  <Pricing />
   <Tools />
   <Questions/>
+  <Pricing />
   </div>
   );
 }

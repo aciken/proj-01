@@ -1,4 +1,51 @@
 .tools{
-    height: 120vh;
-    background-color: #ffecd7;
+    display: flex;
+    height: 100vh;
+    background-color: rgb(37, 40, 196);
+    padding: 0 20%;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.chose-tool{
+    border-radius: 10px;
+}
+
+a svg{
+    height: 20px;
+    width: auto;
+    fill:rgb(37, 40, 196)
+}
+
+
+
+
+.chose-tool ul li{
+    list-style: none;
+    padding: 6px;
+    margin: 10px;
+    border-radius: 10px;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.one-tool.clicked{
+    padding: 7px;
+
+}
+
+.one-tool{
+    display: flex;
+    align-items: center;
+}
+
+
+
+.tool-showcase{
+    height: 300px;
+    width: 400px;
+    background-color: black;
 }
