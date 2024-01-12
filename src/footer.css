@@ -1,0 +1,39 @@
+@font-face {
+    font-family: 'Roboto-Regular';
+    src: url(./assets/Roboto-Regular.ttf);
+}
+
+
+.footer{
+    color:#ffecd7;
+    font-family: 'Roboto-Regular';
+    background-color: #071a57;
+    height: fit-content;
+    padding: 3% 30%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-line h1{
+    color: #9dc4f0;
+    font-size: 1.5rem;
+
+}
+
+a{
+    color:#ffecd7;
+    text-decoration: none;
+}
+
+.rights{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.footer-line{
+    display: flex;
+    flex-direction: column;
+}
