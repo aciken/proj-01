@@ -1,9 +1,11 @@
 import './footer.css'
+import image from './assets/logo.png'
 
 export function Footer() {
  return(
         <div className="footer">
             <div className='rights'>
+            <p className='sign-up'>Sign Up</p>
             <p>
                 Ship your startup in days, not week <br/>
                 Copyright © 2024 - All rights reserved
