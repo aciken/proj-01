@@ -34,7 +34,7 @@ a svg{
 
 .one-tool.clicked{
     padding: 7px;
-
+    color:rgb(37, 40, 196)
 }
 
 .one-tool{
@@ -44,8 +44,53 @@ a svg{
 
 
 
-.tool-showcase{
-    height: 300px;
-    width: 400px;
-    background-color: black;
+
+
+
+@media screen and (max-width: 1400px) {
+    
+    .tools{
+        padding: 0 10% 0 5%;
+    }
+
+    .embedVideo{
+        scale: 90%;
+    }
+}
+
+
+@media screen and (max-width: 1135px) {
+
+    .tools{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .embedVideo{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+}
+
+@media screen and (max-width: 900px) {
+
+    .embedVideo{
+        scale: 70%;
+    }
+
+    .chose-tool ul li{
+        font-size: 10px;   
+    }
+    
+}
+
+@media screen and (max-width: 450px) {
+
+    .embedVideo{
+        scale: 50%;
+    }
+
 }
