@@ -1,7 +1,6 @@
 import './footer.css'
-import image from './assets/logo.png'
 
-export function Footer() {
+export function Footer(props) {
  return(
         <div className="footer">
 
@@ -25,9 +24,9 @@ export function Footer() {
                 <p><a href="#">Press</a></p>
                 <p><a href="#">Jobs</a></p>
             </div>
-            
+
             <div className='rights'>
-            <p className='sign-up'>Sign Up</p>
+            <p onClick={props.loginClick} className='sign-up'>Sign Up</p>
             <p>
                 Ship your startup in days, not week <br/>
                 Copyright © 2024 - All rights reserved
