@@ -4,14 +4,7 @@ import image from './assets/logo.png'
 export function Footer() {
  return(
         <div className="footer">
-            <div className='rights'>
-            <p className='sign-up'>Sign Up</p>
-            <p>
-                Ship your startup in days, not week <br/>
-                Copyright © 2024 - All rights reserved
-            </p>
 
-            </div>
             <div className='footer-line links'>
                 <h1>LINKS</h1>
                 <p><a href="#">Pricing</a></p>
@@ -31,6 +24,15 @@ export function Footer() {
                 <p><a href="#">Forum</a></p>
                 <p><a href="#">Press</a></p>
                 <p><a href="#">Jobs</a></p>
+            </div>
+            
+            <div className='rights'>
+            <p className='sign-up'>Sign Up</p>
+            <p>
+                Ship your startup in days, not week <br/>
+                Copyright © 2024 - All rights reserved
+            </p>
+
             </div>
         </div>
  )
