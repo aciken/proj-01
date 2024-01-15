@@ -2,7 +2,7 @@ import './nav.css';
 import logo from './assets/logo.png';
 import { useState } from 'react';
 
-export function Nav(props) {
+export function Nav() {
 
 
     const handleScrollToPricing = () => {
@@ -31,7 +31,7 @@ export function Nav(props) {
                 <a href="#" onClick={handleScrollToTools}>Tools</a>
                 <a href="#" onClick={handleScrollToQuestions} className='demo-nav'>FAQ</a>
                 <a href="#" onClick={handleScrollToPricing}>Pricing</a>
-                <a href="#"onClick={props.loginClick} >Login</a>
+                <a href="#" >Login</a>
             </div>
         </div>
     )

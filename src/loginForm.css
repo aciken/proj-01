@@ -11,6 +11,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 30px;
+
 }
 
 .login-form{
@@ -44,13 +46,43 @@
 }
 
 .sign-btn{
-    display: flex;
-    justify-content: center;
-    width: 60px;
+    cursor: pointer;
+    padding: 8px 75px;
+    border: none;
+    border-radius: 15px;
+    background-color: rgb(37, 40, 196);
+    color: white;
 }
 
 .form-border{
-    border: 1px solid black;
-    border-radius: 25px;
+    border: 2px solid black;
     padding: 20px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
 }
+
+.forgot{
+    color: black;
+    font-size: .8rem;
+    text-decoration: underline;
+}
+
+.sign-up{
+    cursor: default;
+    background-color: white;
+    color: black;  
+}
+.sign-up a{
+    text-decoration: underline;
+    color: black;
+}
+
+.sign-up:hover{
+    background-color: white;
+    color: black;  
+}
+
