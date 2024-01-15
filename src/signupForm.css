@@ -48,3 +48,8 @@
     align-items: center;
     font-size: .8rem;
 }
+
+.login-link a{
+    color: black;
+    text-decoration: underline;
+}

@@ -17,6 +17,7 @@ export function Signup(){
                         I agree to the terms and conditions
                     </label>
                             <button className='sign-btn'>Sign Up</button>
+                            <p className='login-link'>Already have an account? <Link to="/login">Log In</Link></p>
                         </form>
                     </div>
          </div>
