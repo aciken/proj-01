@@ -1,5 +1,6 @@
 import './nav.css';
 import logo from './assets/logo.png';
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
 export function Nav() {
@@ -31,7 +32,7 @@ export function Nav() {
                 <a href="#" onClick={handleScrollToTools}>Tools</a>
                 <a href="#" onClick={handleScrollToQuestions} className='demo-nav'>FAQ</a>
                 <a href="#" onClick={handleScrollToPricing}>Pricing</a>
-                <a href="#" >Login</a>
+                <Link to="/Login">Login</Link>
             </div>
         </div>
     )

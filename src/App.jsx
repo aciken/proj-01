@@ -1,11 +1,7 @@
-import { BrowserRouter as Switch,Router, Route} from 'react-router-dom';
-import { Nav } from "./nav";
-import { Hero } from "./Hero";
-import { Pricing } from "./Pricing";
-import { Questions } from "./Questions";
-import { Tools } from "./Tools";
-import { Footer } from "./Footer";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { MainPage } from './MainPage';
 import { Login } from "./LoginForm"; 
+import { Signup } from "./SignupForm";
 import './app.css';
 
 
@@ -20,21 +16,12 @@ export function App() {
 }
 
   return (
-
 <Router>
-  <Switch>
-    <Route path='/main'>
-      <Nav/>
-      <Hero />
-      <Tools />
-      <Questions/>
-      <Pricing />
-      <Footer />
-    </Route>
-
-    <Route path='/login' render={(props) => <Login {...props} />}/>
-  </Switch>
+<Routes>
+   <Route exact path="/" element={<MainPage/>} />
+   <Route exact path="/login" element={<Login />} />
+   <Route exact path="/signup" element={<Signup/>} />
+</Routes>
 </Router>
-
   );
 }

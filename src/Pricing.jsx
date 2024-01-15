@@ -1,4 +1,5 @@
 import './Pricing.css'
+import { Link } from 'react-router-dom';
 
 export function Pricing() {
   return (
@@ -24,7 +25,7 @@ export function Pricing() {
                 <p className='content-text no'><span>&#10005;</span> Video Marketing</p>
             </div>
             <div className='price-card-footer'>
-                <button>Sign Up</button>
+                <button><Link to="/signup">Sign Up</Link></button>
             </div>
         </div>
 
