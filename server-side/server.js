@@ -5,6 +5,7 @@ import { OpenAI } from 'openai';
 const openai = new OpenAI(process.env.OPENAI_API_KEY);
 
 
+
 async function main(content) {
   const response = await openai.chat.completions.create({
         model: 'gpt-3.5-turbo',
