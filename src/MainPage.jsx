@@ -4,6 +4,7 @@ import { Pricing } from "./Pricing";
 import { Questions } from "./Questions";
 import { Tools } from "./Tools";
 import { Footer } from "./Footer";
+import { AiChat } from "./AiChat";
 
 export function MainPage(){
     return(
@@ -14,6 +15,7 @@ export function MainPage(){
             <Questions/>
             <Pricing />
             <Footer />
+            <AiChat/>
         </div>
     )
 }
