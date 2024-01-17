@@ -1,7 +1,13 @@
 import { useState } from "react"
 import OpenAI from "openai";
+
 import './AiChat.css';
 
+
+
+const configuration = new Configuration({
+apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+});
 
 
 
@@ -73,24 +79,8 @@ async function callOpenAIAPI() {
 
     // Third API call
 
-    const APIBody3 = {
-        "model": "dall-e-3",
-        "prompt": "Video Thumbnai about " + chat,
-        "n": 1,
-        "size": "1024x1024"
-    };
-    
-    const response3 = await fetch('http://localhost:3001/api/images/generation', {
-        method: "POST",
-        headers:{
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + API_KEY
-        },
-        body: JSON.stringify(APIBody3)
-    });
-    
-    const data3 = await response3.json();
-    console.log('Image:', data3);
+
+
 }
 
 
