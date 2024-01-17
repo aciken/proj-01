@@ -27,3 +27,8 @@
 .sub-chat:hover{
     background-color: rgb(30, 46, 114);  
 }
+
+.AIimg{
+    width: 600px;
+    height: 350px;
+}

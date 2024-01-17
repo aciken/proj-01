@@ -1,23 +1,28 @@
 import { useState } from "react"
 import OpenAI from "openai";
 
+
 import './AiChat.css';
 
 
 
-const configuration = new Configuration({
-apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-});
+const openai = new OpenAI({apiKey: import.meta.env.VITE_OPENAI_API_KEY , dangerouslyAllowBrowser: true});
+
+
+
+
+
 
 
 
 export function AiChat(){
 
-    const API_KEY = "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";
+
 
 const [chat, setChat] = useState("")
 const [response, setResponse] = useState("");
 const [description, setDescription] = useState("")
+const [url, setUrl] = useState("")
 
 
 async function callOpenAIAPI() {
@@ -40,7 +45,7 @@ async function callOpenAIAPI() {
         method: "POST",
         headers:{
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + API_KEY
+            "Authorization": "Bearer " + import.meta.env.VITE_OPENAI_API_KEY
         },
         body: JSON.stringify(APIBody1)
     });
@@ -68,7 +73,7 @@ async function callOpenAIAPI() {
         method: "POST",
         headers:{
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + API_KEY
+            "Authorization": "Bearer " + import.meta.env.VITE_OPENAI_API_KEY
         },
         body: JSON.stringify(APIBody2)
     });
@@ -79,8 +84,14 @@ async function callOpenAIAPI() {
 
     // Third API call
 
-
-
+  
+        const image = await openai.images.generate({ model: "dall-e-3", prompt: "Youtube thumbnail of " + chat, n:1,size: "1792x1024", });
+      
+        console.log(image.data[0].url);
+        console.log(image.data)
+        console.log(url)
+        setUrl(image.data.url)
+      
 }
 
 
@@ -101,6 +112,7 @@ async function callOpenAIAPI() {
                 <div>
                     <p>{response}</p>
                     <p>{description}</p>
+                    <img className="AIimg" src={url} alt="" />
                 </div>
 
     
