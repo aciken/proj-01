@@ -6,7 +6,7 @@ import './AiChat.css';
 
 export function AiChat(){
 
-    const API_KEY = "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";
+    const API_KEY = "";
 
 const [chat, setChat] = useState("")
 const [response, setResponse] = useState("")
