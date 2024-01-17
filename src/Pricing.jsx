@@ -78,7 +78,7 @@ export function Pricing() {
                 <p className='content-text yes'><span>&#10003;</span> Video Marketing</p>
             </div>
             <div className='price-card-footer'>
-                <button>Buy</button>
+                <button><Link to="logedPage" >Buy</Link></button>
             </div>
         </div>
     </div>  

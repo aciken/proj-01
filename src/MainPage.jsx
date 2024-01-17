@@ -15,7 +15,6 @@ export function MainPage(){
             <Questions/>
             <Pricing />
             <Footer />
-            <AiChat/>
         </div>
     )
 }

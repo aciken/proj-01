@@ -1,11 +1,12 @@
 import { useState } from "react"
 import OpenAI from "openai";
+import './AiChat.css';
 
 
 
 export function AiChat(){
 
-    const API_KEY = "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";
+    const API_KEY = "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";
 
 const [chat, setChat] = useState("")
 const [response, setResponse] = useState("")
@@ -23,7 +24,7 @@ const APIBody = {
         },
         {
             "role": "user",
-            "content": "What is the best youtube video title for a video with this description" + chat
+            "content": "Give me best possible youtube title for video with this description" + chat
         }
     ],
 }
@@ -40,6 +41,7 @@ async function callOpenAIAPI() {
     return data.json()
 }).then((data) =>{
     console.log(data)
+    setResponse(data.choices[0].message.content)
     console.log(data.choices[0].message.content)
 })  
 
@@ -54,14 +56,20 @@ async function callOpenAIAPI() {
 <div className="whole">
             <div>
                 <textarea
+                className="chat-place"
                 onChange={(event)=>setChat(event.target.value)} 
                 placeholder="What is your video about?"
-                cols="30"
+                cols="50"
                 rows="10" />
             </div>
             <div>
-                <button onClick={callOpenAIAPI}>Submit</button>
+                <button className="sub-chat" onClick={callOpenAIAPI}>Submit</button>
             </div>
+                <div>
+                    <p>{response}</p>
+                </div>
+
+            
 
 </div>
     )

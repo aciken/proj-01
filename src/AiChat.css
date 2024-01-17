@@ -1,0 +1,29 @@
+.whole{
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content:flex-start;
+    align-items: center;
+    margin-top: 5%;
+}
+
+.chat-place{
+    resize: none;
+    border-radius: 10px;
+    pad: 5px;
+
+}
+
+
+.sub-chat{
+    cursor: pointer;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: rgb(41, 60, 143);
+    color: white
+}
+
+.sub-chat:hover{
+    background-color: rgb(30, 46, 114);  
+}
