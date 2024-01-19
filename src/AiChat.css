@@ -4,7 +4,9 @@
     flex-direction: column;
     justify-content:flex-start;
     align-items: center;
-    margin-top: 5%;
+    padding-top: 5%;
+    background-color: #ffecd7;
+    padding: 0 25%;
 }
 
 .chat-place{
@@ -29,6 +31,18 @@
 }
 
 .AIimg{
-    width: 600px;
-    height: 350px;
+    width: 300px;
+    height: 170px;
+}
+
+.result-grid{
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 100px;
+}
+
+.youtube-title{
+
 }

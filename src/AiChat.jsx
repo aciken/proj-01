@@ -16,6 +16,8 @@ const openai = new OpenAI({apiKey: import.meta.env.VITE_OPENAI_API_KEY , dangero
 
 
 export function AiChat(){
+  
+  const [showResult, setShowResult] = useState(false); 
 
     const [chat, setChat] = useState("")
 const [response, setResponse] = useState("");
@@ -63,7 +65,7 @@ async function callOpenAIAPI() {
     main1()
     main2(40)
     imageGen()
-
+  setShowResult(true); 
    
 }
 
@@ -82,11 +84,14 @@ async function callOpenAIAPI() {
             <div>
                 <button className="sub-chat" onClick={callOpenAIAPI}>Submit</button>
             </div>
-                <div>
-                    <p>{response}</p>
-                    <p>{description}</p>
-                    <img className="AIimg" src={url} alt="" />
-                </div>
+            {showResult && ( // Conditionally render the result div
+                        <div className="result-grid">
+                          <p className="youtube-title">{response}</p>
+                          <p className="youtube-desc">{description}</p>
+                          <img className="AIimg" src={url} alt="" />
+                        </div>
+                      )}
+                    
 
     
 
