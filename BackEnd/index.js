@@ -1,20 +1,65 @@
-const experss = require('express');
-const mongoose = require('mongoose');
+const express = require('express');
+const collection = require('./mongo');
 const cors = require('cors');
-const UserModel = require('./models/User');
-
-const app = experss();
+const app  = express();
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 app.use(cors());
-app.use(experss.json());
 
-mongoose.connect("mongodb://127.0.0.1:27017/proj-01")
+app.get("/", cors(), (req, res) =>{
 
-app.get("/getUsers", (req, res) => {
-  UserModel.find()
-  .then(users => res.json(users))
-  .catch(err => res.json(err))
 })
 
-app.listen(3001, () => {
-  console.log("Server is running on port 3001");
+
+app.post("/login",async(req,res) => {
+  const {email, password} = req.body;
+
+  try{
+    const check =await collection.findOne({email: email})
+
+    if(check){
+      res.json("exist")
+    }
+    else{
+      res,json("not exist")
+    }
+  }
+  catch(e){
+    res,json("not exist");
+  }
 })
+
+
+
+
+app.get("/signup", cors(), (req, res) =>{
+
+})
+
+
+app.post("/",async(req,res) => {
+  const {email, password} = req.body;
+
+  const data = {
+    email:email,
+    password:password
+  }
+
+  try{
+    const check =await collection.findOne({email: email})
+
+    if(check){
+      res.json("exist")
+    }
+    else{
+      res,json("not exist")
+      await collection.insertOne([data]);
+    }
+  }
+  catch(e){
+    res,json("not exist");
+  }
+})
+
+
+app.listen(3000, () => console.log("Server is running on port 3000"));

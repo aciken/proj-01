@@ -1,8 +1,11 @@
 import './loginForm.css';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import axios from 'axios';
+import { useState } from 'react';
 
 export function Login(){
+
+    const history = useNavigate()
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -12,8 +15,20 @@ export function Login(){
 
         try{
 
-            await axios.post("http://localhost:3001/", {
+            await axios.post("http://localhost:3000/login", {
                 email,password
+            })
+            .then(res => {
+                if(res.data === "exist"){
+                    history("/logedPage",{state:{id:email}})
+                }
+                else if(res.data === "not exist"){
+                    alert("user does not exist")
+                }
+            })
+            .catch(e => {
+                alert("wrong details")
+                console.log(e);
             })
 
             
