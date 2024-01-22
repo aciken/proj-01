@@ -15,7 +15,24 @@ const UserSchema = new mongoose.Schema({
     },
     });
 
+ 
+      
+
+
     const collection = mongoose.model('collection', UserSchema);
 
+
     module.exports = collection;
+
+    const user = new collection({
+        email: 'test@example.com',
+        password: 'password123',
+      });
     
+    user.save()
+    .then(doc => {
+      console.log('User saved successfully', doc);
+    })
+    .catch(err => {
+      console.error(err);
+    });

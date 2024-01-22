@@ -6,28 +6,26 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cors());
 
-app.get("/", cors(), (req, res) =>{
+app.get("/login", cors(), (req, res) =>{
 
 })
 
 
-app.post("/login",async(req,res) => {
-  const {email, password} = req.body;
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
 
-  try{
-    const check =await collection.findOne({email: email})
+  try {
+    const check = await collection.findOne({ email: email });
 
-    if(check){
-      res.json("exist")
+    if (check) {
+      res.json("exist");
+    } else {
+      res.json("not exist");
     }
-    else{
-      res,json("not exist")
-    }
+  } catch (e) {
+    console.error(e); // Log the error, but don't send a response here
   }
-  catch(e){
-    res,json("not exist");
-  }
-})
+});
 
 
 
@@ -37,7 +35,7 @@ app.get("/signup", cors(), (req, res) =>{
 })
 
 
-app.post("/",async(req,res) => {
+app.post("/signup",async(req,res) => {
   const {email, password} = req.body;
 
   const data = {
@@ -52,12 +50,12 @@ app.post("/",async(req,res) => {
       res.json("exist")
     }
     else{
-      res,json("not exist")
+      res.json("not exist")
       await collection.insertOne([data]);
     }
   }
   catch(e){
-    res,json("not exist");
+    console.error(e);
   }
 })
 
