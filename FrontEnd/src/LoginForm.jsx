@@ -21,6 +21,7 @@ export function Login(){
             .then(res => {
                 if(res.data === "exist"){
                     history("/logedPage",{state:{id:email}})
+                    console.log(email)
                 }
                 else if(res.data === "not exist"){
                     alert("user does not exist")

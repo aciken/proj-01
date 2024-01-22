@@ -1,10 +1,46 @@
 const express = require('express');
-const collection = require('./mongo');
+const mongoose = require('mongoose');
 const cors = require('cors');
 const app  = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cors());
+
+
+
+
+mongoose.connect("mongodb://localhost:27017/proj-01")
+.then(() => console.log("Connected to MongoDB"))
+.catch(err => console.log(err));
+
+
+const UserSchema = new mongoose.Schema({
+  firstName:{
+    type: String,
+    required: true,
+  },
+  lastName:{
+    type: String,
+    required: true,
+  },
+    email:{
+        type: String,
+        required: true,
+    },
+    password:{
+        type: String,
+        required: true,
+    },
+    });
+
+
+
+    const collection = mongoose.model('collection', UserSchema);
+
+
+
+
+
 
 app.get("/login", cors(), (req, res) =>{
 
@@ -15,7 +51,7 @@ app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const check = await collection.findOne({ email: email });
+    const check = await collection.findOne({ email: email, password: password });
 
     if (check) {
       res.json("exist");
@@ -36,28 +72,28 @@ app.get("/signup", cors(), (req, res) =>{
 
 
 app.post("/signup",async(req,res) => {
-  const {email, password} = req.body;
+  const {firstName, lastName, email, password} = req.body;
 
-  const data = {
-    email:email,
-    password:password
-  }
+  const coll = new collection({
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    password: password,
+  });
 
-  try{
-    const check =await collection.findOne({email: email})
+  try {
+    const check = await collection.findOne({ email: email });
 
-    if(check){
-      res.json("exist")
+    if (check) {
+      res.json("exist");
+    } else {
+      await coll.save();
+      res.json("not exist");
     }
-    else{
-      res.json("not exist")
-      await collection.insertOne([data]);
-    }
-  }
-  catch(e){
+  } catch (e) {
     console.error(e);
   }
-})
+});
 
 
 app.listen(3000, () => console.log("Server is running on port 3000"));

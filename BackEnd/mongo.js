@@ -15,6 +15,8 @@ const UserSchema = new mongoose.Schema({
     },
     });
 
+
+
  
       
 
@@ -24,15 +26,17 @@ const UserSchema = new mongoose.Schema({
 
     module.exports = collection;
 
-    const user = new collection({
-        email: 'test@example.com',
-        password: 'password123',
-      });
     
-    user.save()
-    .then(doc => {
-      console.log('User saved successfully', doc);
-    })
-    .catch(err => {
-      console.error(err);
-    });
+
+    // const user = new collection({
+    //     email: 'adrianmarton@gmail.com',
+    //     password: 'dartadiken',
+    //   });
+    
+    // user.save()
+    // .then(doc => {
+    //   console.log('User saved successfully', doc);
+    // })
+    // .catch(err => {
+    //   console.error(err);
+    // });
