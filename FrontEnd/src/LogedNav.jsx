@@ -9,7 +9,6 @@ export function LogedNav(){
                 <img src={logo} alt="Logo" />
             </a>
             <div className="right-nav-part">
-                <a href="#" >Home</a>
                 <Link to="/">Logout</Link>
 
             </div>

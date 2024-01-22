@@ -31,6 +31,9 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    tier:{
+      type: String
+    }
     });
 
 
@@ -79,6 +82,7 @@ app.post("/signup",async(req,res) => {
     lastName: lastName,
     email: email,
     password: password,
+    tier: "1"
   });
 
   try {

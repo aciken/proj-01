@@ -1,10 +1,20 @@
 import { useState } from "react"
 import OpenAI from "openai";
 import './AiChat.css';
+import { useLocation } from "react-router-dom";
+
+
+
+
 
 const openai = new OpenAI({apiKey: import.meta.env.VITE_OPENAI_API_KEY , dangerouslyAllowBrowser: true});
 
 export function AiChat(){
+const location = useLocation();
+const {id} = location.state;
+console.log(id)
+
+
   const [showResult, setShowResult] = useState(false); 
   const [chat, setChat] = useState("");
   const [response, setResponse] = useState("");
