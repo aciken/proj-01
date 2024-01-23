@@ -1,7 +1,7 @@
 import { useState } from "react"
 import OpenAI from "openai";
 import './AiChat.css';
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 import axios from "axios";
 
 
@@ -11,11 +11,23 @@ import axios from "axios";
 const openai = new OpenAI({apiKey: import.meta.env.VITE_OPENAI_API_KEY , dangerouslyAllowBrowser: true});
 
 export function AiChat(){
+  const history = useNavigate()
 const location = useLocation();
 const {id} = location.state;
 const {tier} = location.state;
-const {usage} = location.state;
-console.log(usage);
+
+
+async function updateUsage(id) {
+  const {usage} = location.state;
+  const updatedUsage = usage + 1;
+  try {
+    const response = await axios.put("http://localhost:3000/updateUsage", { id, usage: updatedUsage });
+    console.log("Usage updated successfully!", response.data);
+    history("/logedPage",{state: {id: id, tier: tier, usage: updatedUsage}})
+  } catch (error) {
+    console.error("Failed to update usage:", error);
+  }
+}
 
 // async function oneUsage(usage){
 //   const updatedUsage = usage + 1;
@@ -71,10 +83,10 @@ console.log(usage);
   async function callOpenAIAPI() {
     main1();
     main2(40);
-    imageGen();
+    // imageGen();
     setShowResult(true);
     console.log(url);
-    // oneUsage(usage);
+  updateUsage(id)
   }
 
   function handlePopup() {

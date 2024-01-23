@@ -105,6 +105,46 @@ app.post("/signup",async(req,res) => {
   }
 });
 
+app.put('/updateUsage', async (req, res) => {
+  const { id, usage} = req.body;
+
+  try {
+    console.log(id)
+    const user = await collection.findOne({ email: id });
+    console.log(user)
+    if (user) {
+      user.usage = usage;
+      await user.save();
+      res.json({ message: 'Usage updated successfully!' });
+    } else{
+      res.status(404).json({ message: 'User not found' });
+    }
+    console.log(id, usage)
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// app.put('/updateUsage', async (req, res) => {
+//   const { id, usage } = req. body;
+//   console.log(id, usage)
+
+//   try {
+//     const user = await collection.findById(id);
+//     if (!user) {
+//       return res.status(404).json({ message: 'User not found' });
+//     }
+
+//     user.usage = usage;
+//     await user.save();
+
+//     res.json({ message: 'Usage updated successfully!' });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// });
 
 
 
