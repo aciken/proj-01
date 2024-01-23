@@ -3,6 +3,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import { useState } from 'react';
 
+
 export function Login(){
 
     const history = useNavigate()
@@ -19,9 +20,12 @@ export function Login(){
                 email,password
             })
             .then(res => {
-                if(res.data === "exist"){
-                    history("/logedPage",{state:{id:email}})
-                    console.log(email)
+                if(res.data !== "not exist"){
+                    const tier =  res.data.tier;
+                    
+
+ 
+                    history("/logedPage",{state: {id: email, tier}})
                 }
                 else if(res.data === "not exist"){
                     alert("user does not exist")

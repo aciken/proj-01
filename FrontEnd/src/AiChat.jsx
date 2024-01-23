@@ -12,7 +12,9 @@ const openai = new OpenAI({apiKey: import.meta.env.VITE_OPENAI_API_KEY , dangero
 export function AiChat(){
 const location = useLocation();
 const {id} = location.state;
+const {tier} = location.state;
 console.log(id)
+console.log(tier)
 
 
   const [showResult, setShowResult] = useState(false); 
@@ -70,7 +72,29 @@ console.log(id)
   }
 
   return(
+
     <div className="whole">
+          {tier === "1" ? (
+            <div>
+              {/* Render this if `tier` is 1 */}
+              <p>Tier is 1!</p>
+            </div>
+          ) : tier === "2" ? (
+            <div>
+              {/* Render this if `tier` is 2 */}
+              <p>Tier is 2!</p>
+            </div>
+          ) : tier === "3" ? (
+            <div>
+              {/* Render this if `tier` is 3 */}
+              <p>Tier is 3!</p>
+            </div>
+          ) : (
+            <div>
+              {/* Render this if `tier` is not 1, 2, or 3 */}
+              <p>Tier is not defined!</p>
+            </div>
+          )}
       <div>
         <textarea
           className="chat-place"

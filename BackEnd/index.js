@@ -51,13 +51,13 @@ app.get("/login", cors(), (req, res) =>{
 
 
 app.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password} = req.body;
 
   try {
-    const check = await collection.findOne({ email: email, password: password });
+    const check = await collection.findOne({ email: email, password: password});
 
     if (check) {
-      res.json("exist");
+      res.json(check);
     } else {
       res.json("not exist");
     }
@@ -82,7 +82,7 @@ app.post("/signup",async(req,res) => {
     lastName: lastName,
     email: email,
     password: password,
-    tier: "1"
+    tier: "3"
   });
 
   try {
@@ -98,6 +98,8 @@ app.post("/signup",async(req,res) => {
     console.error(e);
   }
 });
+
+
 
 
 app.listen(3000, () => console.log("Server is running on port 3000"));
