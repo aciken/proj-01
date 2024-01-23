@@ -2,6 +2,7 @@ import { useState } from "react"
 import OpenAI from "openai";
 import './AiChat.css';
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 
 
@@ -13,8 +14,19 @@ export function AiChat(){
 const location = useLocation();
 const {id} = location.state;
 const {tier} = location.state;
-console.log(id)
-console.log(tier)
+const {usage} = location.state;
+console.log(usage);
+
+// async function oneUsage(usage){
+//   const updatedUsage = usage + 1;
+//   try {
+//     await axios.put("http://localhost:3000/logedPage", { usage: updatedUsage });
+//     console.log("Usage updated successfully!");
+//   } catch (error) {
+//     console.error("Failed to update usage:", error);
+//   }
+// }
+
 
 
   const [showResult, setShowResult] = useState(false); 
@@ -62,6 +74,7 @@ console.log(tier)
     imageGen();
     setShowResult(true);
     console.log(url);
+    // oneUsage(usage);
   }
 
   function handlePopup() {

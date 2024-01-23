@@ -21,11 +21,12 @@ export function Login(){
             })
             .then(res => {
                 if(res.data !== "not exist"){
-                    const tier =  res.data.tier;
+                    const tier =  res.data.tier
+                    const usage = res.data.usage
                     
 
  
-                    history("/logedPage",{state: {id: email, tier}})
+                    history("/logedPage",{state: {id: email, tier, usage}})
                 }
                 else if(res.data === "not exist"){
                     alert("user does not exist")

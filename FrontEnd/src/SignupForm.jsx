@@ -14,27 +14,41 @@ export function Signup(){
     const [password,setPassword] = useState('');
 
 
-    async function submit(e) {
-        e.preventDefault();
-      
-        try {
-          const response = await axios.post('http://localhost:3000/signup', {
-            firstName,
-            lastName,
-            email,
-            password,    
-          });
-      
-          if (response.data === 'exist') {
-            alert('User already exists');
-          } else if (response.data === 'not exist') {
-            history('/logedPage', { state: { id: email } });
-          }
-        } catch (error) {
-          alert('Wrong details');
-          console.error(error);
-        }
+    async function submit(e){
+      e.preventDefault();
+
+      try{
+
+          await axios.post("http://localhost:3000/signup", {
+              email,password,firstName,lastName
+          })
+          .then(res => {
+            console.log(res.data)
+              if(res.data !== "exist"){
+                  const tier =  res.data.tier
+                  const usage = res.data.usage
+                  
+
+
+                  history("/logedPage",{state: {id: email, tier, usage}})
+              }
+              else if(res.data === "exist"){
+                  alert("user does not exist")
+              }
+          })
+          .catch(e => {
+              alert("wrong details")
+              console.log(e);
+          })
+
+          
       }
+      catch(e){
+          console.log(e)
+      }
+
+  }
+
 
     return(
         <div className="signup">

@@ -33,6 +33,10 @@ const UserSchema = new mongoose.Schema({
     },
     tier:{
       type: String
+    },
+    usage:{
+      type: Number,
+      default: 0
     }
     });
 
@@ -88,11 +92,13 @@ app.post("/signup",async(req,res) => {
   try {
     const check = await collection.findOne({ email: email });
 
+
     if (check) {
       res.json("exist");
     } else {
       await coll.save();
-      res.json("not exist");
+      console.log(coll);
+      res.json(coll);
     }
   } catch (e) {
     console.error(e);
