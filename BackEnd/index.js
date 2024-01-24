@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const app  = express();
+const cron = require('node-cron');
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cors());
@@ -145,6 +146,16 @@ app.put('/updateUsage', async (req, res) => {
 //     res.status(500).json({ message: 'Internal server error' });
 //   }
 // });
+
+cron.schedule('23 20 * * *', async () => {
+  try {
+    // Assuming `collection` is your Mongoose model
+    await collection.updateMany({}, { usage: 0 });
+    console.log('Usage reset successfully!');
+  } catch (error) {
+    console.error('Failed to reset usage:', error);
+  }
+});
 
 
 

@@ -3,6 +3,7 @@ import OpenAI from "openai";
 import './AiChat.css';
 import { useLocation,useNavigate } from "react-router-dom";
 import axios from "axios";
+// import cron from "node-cron";
 
 
 
@@ -15,12 +16,19 @@ export function AiChat(){
 const location = useLocation();
 const {id} = location.state;
 const {tier} = location.state;
+const {usage} = location.state;
+let usageLocal = usage;
 
+// cron.schedule("23 20 * * *", () => {
+//   usageLocal = 0;
+//   console.log("Usage reset to 0!");
+// });
 
 async function updateUsage(id) {
   const {usage} = location.state;
   const updatedUsage = usage + 1;
   try {
+    usageLocal = updatedUsage;
     const response = await axios.put("http://localhost:3000/updateUsage", { id, usage: updatedUsage });
     console.log("Usage updated successfully!", response.data);
     history("/logedPage",{state: {id: id, tier: tier, usage: updatedUsage}})
@@ -87,6 +95,7 @@ async function updateUsage(id) {
     setShowResult(true);
     console.log(url);
   updateUsage(id)
+  
   }
 
   function handlePopup() {
@@ -101,18 +110,35 @@ async function updateUsage(id) {
     <div className="whole">
           {tier === "1" ? (
             <div>
-              {/* Render this if `tier` is 1 */}
               <p>Tier is 1!</p>
+              {usageLocal > 4 ? (
+      <div>
+        {/* Render this if `usage` is higher than 4 */}
+        <p>Reached Limit</p>
+      </div>
+    ) : null}
             </div>
           ) : tier === "2" ? (
             <div>
               {/* Render this if `tier` is 2 */}
               <p>Tier is 2!</p>
+              {usageLocal > 14 ? (
+      <div>
+        {/* Render this if `usage` is higher than 4 */}
+        <p>Reached Limit</p>
+      </div>
+    ) : null}
             </div>
           ) : tier === "3" ? (
             <div>
               {/* Render this if `tier` is 3 */}
               <p>Tier is 3!</p>
+              {usageLocal > 29 ? (
+      <div>
+        {/* Render this if `usage` is higher than 4 */}
+        <p>Reached Limit</p>
+      </div>
+    ) : null}
             </div>
           ) : (
             <div>
