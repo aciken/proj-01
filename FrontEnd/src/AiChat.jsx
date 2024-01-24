@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect} from "react"
 import OpenAI from "openai";
 import './AiChat.css';
 import { useLocation,useNavigate } from "react-router-dom";
@@ -19,14 +19,29 @@ const {tier} = location.state;
 const {usage} = location.state;
 let usageLocal = usage;
 
-// cron.schedule("23 20 * * *", () => {
-//   usageLocal = 0;
-//   console.log("Usage reset to 0!");
-// });
 
-async function updateUsage(id) {
-  const {usage} = location.state;
-  const updatedUsage = usage + 1;
+
+  useEffect(() => {
+    function scheduleNextUpdate() {
+      const now = new Date();
+      const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 22, 42, 0);
+
+      const msUntilTomorrow = tomorrow.getTime() - now.getTime();
+      setTimeout(doSomething, msUntilTomorrow);
+    }
+
+    function doSomething() {
+      usageLocal = 0;
+      console.log('asd')
+      scheduleNextUpdate();
+    }
+
+    scheduleNextUpdate();
+  }, []);
+
+
+async function updateUsage(id, usageLocal) {
+  const updatedUsage = usageLocal + 1;
   try {
     usageLocal = updatedUsage;
     const response = await axios.put("http://localhost:3000/updateUsage", { id, usage: updatedUsage });
@@ -37,15 +52,9 @@ async function updateUsage(id) {
   }
 }
 
-// async function oneUsage(usage){
-//   const updatedUsage = usage + 1;
-//   try {
-//     await axios.put("http://localhost:3000/logedPage", { usage: updatedUsage });
-//     console.log("Usage updated successfully!");
-//   } catch (error) {
-//     console.error("Failed to update usage:", error);
-//   }
-// }
+
+
+
 
 
 
@@ -94,7 +103,7 @@ async function updateUsage(id) {
     // imageGen();
     setShowResult(true);
     console.log(url);
-  updateUsage(id)
+  updateUsage(id, usageLocal)
   
   }
 
@@ -171,4 +180,5 @@ async function updateUsage(id) {
       )}
     </div>
   )
+
 }

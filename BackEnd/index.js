@@ -10,6 +10,10 @@ app.use(cors());
 
 
 
+
+
+
+
 mongoose.connect("mongodb://localhost:27017/proj-01")
 .then(() => console.log("Connected to MongoDB"))
 .catch(err => console.log(err));
@@ -107,20 +111,17 @@ app.post("/signup",async(req,res) => {
 });
 
 app.put('/updateUsage', async (req, res) => {
-  const { id, usage} = req.body;
+  const { id, usage } = req.body;
 
   try {
-    console.log(id)
     const user = await collection.findOne({ email: id });
-    console.log(user)
     if (user) {
       user.usage = usage;
       await user.save();
-      res.json({ message: 'Usage updated successfully!' });
-    } else{
+      res.json({ message: 'Usage updated successfully!', usage: user.usage });
+    } else {
       res.status(404).json({ message: 'User not found' });
     }
-    console.log(id, usage)
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
@@ -147,15 +148,32 @@ app.put('/updateUsage', async (req, res) => {
 //   }
 // });
 
-cron.schedule('23 20 * * *', async () => {
+const WebSocket = require('ws');
+
+const wss = new WebSocket.Server({ port: 8080 });
+
+let clients = [];
+
+wss.on('connection', (ws) => {
+  clients.push(ws);
+
+  ws.on('close', () => {
+    clients = clients.filter(client => client !== ws);
+  });
+});
+
+cron.schedule('42 22 * * *', async () => {
   try {
     // Assuming `collection` is your Mongoose model
     await collection.updateMany({}, { usage: 0 });
     console.log('Usage reset successfully!');
+
+    clients.forEach(client => client.send('usage reset'));
   } catch (error) {
     console.error('Failed to reset usage:', error);
   }
 });
+
 
 
 
