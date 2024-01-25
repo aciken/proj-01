@@ -13,37 +13,59 @@ const openai = new OpenAI({apiKey: import.meta.env.VITE_OPENAI_API_KEY , dangero
 
 export function AiChat(){
   const history = useNavigate()
-const location = useLocation();
-const {id} = location.state;
-const {tier} = location.state;
-const {usage} = location.state;
-let usageLocal = usage;
-
-
+  const location = useLocation();
+  const {id} = location.state;
+  const {tier} = location.state;
+  const {usage} = location.state;
+  const [usageLocal, setUsageLocal] = useState(usage);
+  console.log(usageLocal)
 
   useEffect(() => {
-    function scheduleNextUpdate() {
-      const now = new Date();
-      const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 22, 42, 0);
+    setUsageLocal(usage); // Update the usageLocal state when the usage prop changes
+  }, [usage]);
 
-      const msUntilTomorrow = tomorrow.getTime() - now.getTime();
-      setTimeout(doSomething, msUntilTomorrow);
+  // Rest of your code...
+
+
+useEffect(() => {
+  const ws = new WebSocket('ws://localhost:8080');
+
+  ws.onopen = () => {
+    console.log('WebSocket connection opened');
+  };
+
+  ws.onerror = (error) => {
+    console.error('WebSocket error:', error);
+  };
+
+  ws.onclose = (event) => {
+    console.log('WebSocket connection closed:', event.code, event.reason);
+  };
+
+  ws.onmessage = (event) => {
+    console.log('Received message:', event.data);
+    if (event.data === 'usage reset') {
+      setUsageLocal(0);
+      console.log(usageLocal)
+      console.log('Usage was reset!');
     }
+  };
 
-    function doSomething() {
-      usageLocal = 0;
-      console.log('asd')
-      scheduleNextUpdate();
+  return () => {
+    if (ws.readyState === WebSocket.OPEN) {
+      ws.close();
     }
+  };
+}, []);
 
-    scheduleNextUpdate();
-  }, []);
 
 
 async function updateUsage(id, usageLocal) {
-  const updatedUsage = usageLocal + 1;
+  const updatedUsage = ++usageLocal;
+  console.log(`Updated usage to ${updatedUsage}`)
   try {
     usageLocal = updatedUsage;
+    console.log(`Usage Local is now ${usageLocal}`)
     const response = await axios.put("http://localhost:3000/updateUsage", { id, usage: updatedUsage });
     console.log("Usage updated successfully!", response.data);
     history("/logedPage",{state: {id: id, tier: tier, usage: updatedUsage}})
@@ -131,7 +153,7 @@ async function updateUsage(id, usageLocal) {
             <div>
               {/* Render this if `tier` is 2 */}
               <p>Tier is 2!</p>
-              {usageLocal > 14 ? (
+              {usageLocal > 1 ? (
       <div>
         {/* Render this if `usage` is higher than 4 */}
         <p>Reached Limit</p>
