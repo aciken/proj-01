@@ -49,6 +49,21 @@ text-decoration: underline;
     display: none;
 }
 
+.drop-btn{
+margin-bottom: 20px;
+}
+
+.dropdown-content{
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown{
+position: absolute;
+
+
+}
+
 
 @media screen and (max-width: 1380px){
     .whole-nav{

@@ -178,16 +178,16 @@ async function updateUsage(id, usageLocal) {
             </div>
           )}
       <div>
-        <textarea
+        {/* <textarea
           className="chat-place"
           onChange={(event)=>setChat(event.target.value)} 
           placeholder="What is your video about?"
           cols="50"
-          rows="10" />
+          rows="10" /> */}
       </div>
-      <div>
+      {/* <div>
         <button className="sub-chat" onClick={callOpenAIAPI}>Submit</button>
-      </div>
+      </div> */}
       {showResult && (
         <div className="result-grid">
             <p onClick={() => {navigator.clipboard.writeText(response); handlePopup();}} className="youtube-title">{response}</p>
@@ -200,6 +200,13 @@ async function updateUsage(id, usageLocal) {
           <p className="copy-popup">Copied to Clipboard</p>
         </div>
       )}
+      <div className="down-part">
+        <input type="text"
+        className="chat-input"
+        onChange={(e) => setChat(e.target.value)}
+        placeholder="What is your video aboout" />
+        <button className="sub-chat" onClick={callOpenAIAPI}>Submit</button>
+      </div>
     </div>
   )
 
