@@ -18,6 +18,7 @@ export function AiChat(){
   const {tier} = location.state;
   const {usage} = location.state;
   const [usageLocal, setUsageLocal] = useState(usage);
+  const [chatInput, setChatInput] = useState("chat-input");
   console.log(usageLocal)
 
   useEffect(() => {
@@ -48,7 +49,9 @@ useEffect(() => {
       setUsageLocal(0);
       console.log(usageLocal)
       console.log('Usage was reset!');
+      setUsageLimit(uses)
     }
+
   };
 
   return () => {
@@ -87,6 +90,26 @@ async function updateUsage(id, usageLocal) {
   const [url, setUrl] = useState("");
   const [showPopup, setShowPopup] = useState(false); // Add state for the pop-up
 
+  let uses = 0;
+
+  if(tier == 1){
+    uses = 5;
+  } else if(tier == 2){
+    uses = 10;
+  } else{
+    uses = 15;
+  }
+
+let firstUse = 0;
+
+if(usageLocal >= uses){
+   firstUse = 0;
+} else {
+   firstUse = uses - usageLocal;
+}
+
+  const [usageLimit, setUsageLimit] = useState(firstUse);
+
 
   async function main1() {
     const completion = await openai.chat.completions.create({
@@ -115,18 +138,65 @@ async function updateUsage(id, usageLocal) {
   }
 
   async function imageGen(){
+    console.log('imageGen called')
     const image = await openai.images.generate({ model: "dall-e-3", prompt: "Make youtube thumbnail from this video description " + chat, n:1,size: "1792x1024", });
     setUrl(image.data[0].url);
   }
 
   async function callOpenAIAPI() {
-    main1();
-    main2(40);
-    imageGen();
-    setShowResult(true);
-    console.log(url);
-  updateUsage(id, usageLocal)
-  
+    if(tier == 1){
+      if(usageLocal < 5){
+        main1();
+        main2(40);
+        imageGen();
+        console.log('imageGen called2')
+        setShowResult(true);
+        console.log(url);
+      updateUsage(id, usageLocal)
+      } else{
+       setChatInput("chat-input disabled");
+       updateUsage(id, usageLocal)
+      }
+    } else if(tier == 2){
+      if(usageLocal < 10){
+        main1();
+        main2(40);
+        imageGen();
+        console.log('imageGen called2')
+        setShowResult(true);
+        console.log(url);
+      updateUsage(id, usageLocal)
+      } else{
+        setChatInput("chat-input disabled");
+        updateUsage(id, usageLocal)
+      }
+      }else {
+        if(usageLocal < 15){
+          main1();
+          main2(40);
+          imageGen();
+          console.log('imageGen called2')
+          setShowResult(true);
+          console.log(url);
+        updateUsage(id, usageLocal)
+        } else{
+          setChatInput("chat-input disabled");
+          updateUsage(id, usageLocal)
+        }
+    }
+
+    console.log(`${usageLocal} ${uses}`)
+
+    if(usageLocal <= uses){
+      setUsageLimit(uses - usageLocal);
+      console.log(`${uses} ${usageLocal}`)
+      console.log(usageLimit)
+    } else{
+      setUsageLimit(0);
+    
+    }
+
+
   }
 
   function handlePopup() {
@@ -141,35 +211,73 @@ async function updateUsage(id, usageLocal) {
     <div className="whole">
           {tier === "1" ? (
             <div>
-              <p>Tier is 1!</p>
-              {usageLocal > 4 ? (
-      <div>
-        {/* Render this if `usage` is higher than 4 */}
-        <p>Reached Limit</p>
-      </div>
-    ) : null}
+
+              {usageLocal < 6 && showResult ? (
+        <div className="result-grid">
+
+        <div className="image-wrap">
+          <p>Thumbnail:  </p>
+          <img className="AIimg" src={url} alt="" />
+          <div className="downIcon-wrap">
+            <svg className="download-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>download</title><path d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" /></svg>
+          </div>
+          </div>
+        <p onClick={() => {navigator.clipboard.writeText(description); handlePopup();}} className="youtube-desc">Description: {description}</p>
+<p onClick={() => {navigator.clipboard.writeText(response); handlePopup();}} className="youtube-title">Title: {response}</p>
+
+
+</div>
+    ) : usageLocal >= 5 ? (
+    <div>
+    <p className="usage-alert">Usage Limit Reached</p>
+
+  </div> ) : null}
             </div>
           ) : tier === "2" ? (
             <div>
-              {/* Render this if `tier` is 2 */}
-              <p>Tier is 2!</p>
-              {usageLocal > 1 ? (
-      <div>
-        {/* Render this if `usage` is higher than 4 */}
-        <p>Reached Limit</p>
-      </div>
-    ) : null}
+              {usageLocal < 11 && showResult ? (
+        <div className="result-grid">
+
+        <div className="image-wrap">
+          <p>Thumbnail:  </p>
+          <img className="AIimg" src={url} alt="" />
+          <div className="downIcon-wrap">
+            <svg className="download-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>download</title><path d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" /></svg>
+          </div>
+          </div>
+        <p onClick={() => {navigator.clipboard.writeText(description); handlePopup();}} className="youtube-desc">Description: {description}</p>
+<p onClick={() => {navigator.clipboard.writeText(response); handlePopup();}} className="youtube-title">Title: {response}</p>
+
+
+</div>
+    ) : usage >= 10 ? (<div>
+    <p className="usage-alert">Usage Limit Reached</p>
+
+  </div>) : null}
             </div>
           ) : tier === "3" ? (
             <div>
               {/* Render this if `tier` is 3 */}
-              <p>Tier is 3!</p>
-              {usageLocal > 29 ? (
-      <div>
-        {/* Render this if `usage` is higher than 4 */}
-        <p>Reached Limit</p>
-      </div>
-    ) : null}
+
+              {usageLocal < 30 && showResult ? (
+        <div className="result-grid">
+
+        <div className="image-wrap">
+          <p>Thumbnail:  </p>
+          <img className="AIimg" src={url} alt="" />
+          <div className="downIcon-wrap">
+            <svg className="download-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>download</title><path d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" /></svg>
+          </div>
+          </div>
+        <p onClick={() => {navigator.clipboard.writeText(description); handlePopup();}} className="youtube-desc">Description: {description}</p>
+<p onClick={() => {navigator.clipboard.writeText(response); handlePopup();}} className="youtube-title">Title: {response}</p>
+
+
+</div>
+    ) : usage >= 15 ? (<div>
+      <p className="usage-alert">Usage Limit Reached</p>
+    </div>) : null
+      }
             </div>
           ) : (
             <div>
@@ -185,33 +293,20 @@ async function updateUsage(id, usageLocal) {
           cols="50"
           rows="10" /> */}
       </div>
-      {/* <div>
-        <button className="sub-chat" onClick={callOpenAIAPI}>Submit</button>
-      </div> */}
-      {showResult && (
-        <div className="result-grid">
 
-                    <div className="image-wrap">
-                      <p>Thumbnail:  </p>
-                      <img className="AIimg" src={url} alt="" />
-                      </div>
-                    <p onClick={() => {navigator.clipboard.writeText(description); handlePopup();}} className="youtube-desc">Description: {description}</p>
-            <p onClick={() => {navigator.clipboard.writeText(response); handlePopup();}} className="youtube-title">Title: {response}</p>
-
-
-        </div>
-      )}
+ 
       {showPopup && (
         <div className="popup">
           <p className="copy-popup">Copied to Clipboard</p>
         </div>
       )}
-      <div className="down-part">
+        <div className="down-part">
         <input type="text"
-        className="chat-input"
+        className={`${chatInput}`}
         onChange={(e) => setChat(e.target.value)}
         placeholder="What is your video aboout" />
         <button className="sub-chat" onClick={callOpenAIAPI}>Submit</button>
+        <p className="usage-left">{usageLimit}</p>
       </div>
     </div>
   )
