@@ -6,7 +6,7 @@
 .questions{
     height: fit-content;
     min-height:100vh ;
-    background-color: #ffecd7;
+    background-color: #ffffff;
         display: flex;
     flex-direction: column;
     justify-content: center;
@@ -48,7 +48,7 @@
 ul li{
     list-style: none;
     padding: 10px;
-    background-color: #ffecd7;
+    background-color: #ffffff;
     width: 100%;
     text-align: center;
     font-family: 'Roboto-Regular';
@@ -62,7 +62,7 @@ ul li{
 ul li a{
 display: flex;
 justify-content: space-between;
-    background-color: #ffecd7;
+    background-color: #ffffff;
     text-decoration: none;
     color:#183183;
     font-size: 1.2rem;

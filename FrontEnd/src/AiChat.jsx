@@ -122,7 +122,7 @@ async function updateUsage(id, usageLocal) {
   async function callOpenAIAPI() {
     main1();
     main2(40);
-    // imageGen();
+    imageGen();
     setShowResult(true);
     console.log(url);
   updateUsage(id, usageLocal)
@@ -190,9 +190,15 @@ async function updateUsage(id, usageLocal) {
       </div> */}
       {showResult && (
         <div className="result-grid">
-            <p onClick={() => {navigator.clipboard.writeText(response); handlePopup();}} className="youtube-title">{response}</p>
-            <p onClick={() => {navigator.clipboard.writeText(description); handlePopup();}} className="youtube-desc">{description}</p>
-          <img className="AIimg" src={url} alt="" />
+
+                    <div className="image-wrap">
+                      <p>Thumbnail:  </p>
+                      <img className="AIimg" src={url} alt="" />
+                      </div>
+                    <p onClick={() => {navigator.clipboard.writeText(description); handlePopup();}} className="youtube-desc">Description: {description}</p>
+            <p onClick={() => {navigator.clipboard.writeText(response); handlePopup();}} className="youtube-title">Title: {response}</p>
+
+
         </div>
       )}
       {showPopup && (
