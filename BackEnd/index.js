@@ -162,7 +162,7 @@ wss.on('connection', (ws) => {
   });
 });
 
-cron.schedule('57 21 * * *', async () => {
+cron.schedule('00 00 * * *', async () => {
   try {
     // Assuming `collection` is your Mongoose model
     await collection.updateMany({}, { usage: 0 });

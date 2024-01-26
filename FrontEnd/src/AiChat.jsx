@@ -71,7 +71,16 @@ async function updateUsage(id, usageLocal) {
     console.log(`Usage Local is now ${usageLocal}`)
     const response = await axios.put("http://localhost:3000/updateUsage", { id, usage: updatedUsage });
     console.log("Usage updated successfully!", response.data);
-    history("/logedPage",{state: {id: id, tier: tier, usage: updatedUsage}})
+    history("/logedPage",{state: {id: id, tier: tier, usage: updatedUsage}});
+
+    if(usageLocal <= uses){
+      setUsageLimit(uses - usageLocal);
+      console.log(`${uses} ${usageLocal}`)
+      console.log(usageLimit)
+    } else{
+      setUsageLimit(0);
+    
+    }
   } catch (error) {
     console.error("Failed to update usage:", error);
   }
@@ -112,6 +121,7 @@ if(usageLocal >= uses){
 
 
   async function main1() {
+    setResponse("Loading...")
     const completion = await openai.chat.completions.create({
       messages: [
         {"role": "system", "content": "You are a helpful assistant."},
@@ -125,6 +135,7 @@ if(usageLocal >= uses){
   }
 
   async function main2(wordNum) {
+    setDescription("Loading...")
     const completion = await openai.chat.completions.create({
       messages: [
         {"role": "system", "content": "You are a helpful assistant."},
@@ -148,7 +159,7 @@ if(usageLocal >= uses){
       if(usageLocal < 5){
         main1();
         main2(40);
-        imageGen();
+        // imageGen();
         console.log('imageGen called2')
         setShowResult(true);
         console.log(url);
@@ -187,14 +198,7 @@ if(usageLocal >= uses){
 
     console.log(`${usageLocal} ${uses}`)
 
-    if(usageLocal <= uses){
-      setUsageLimit(uses - usageLocal);
-      console.log(`${uses} ${usageLocal}`)
-      console.log(usageLimit)
-    } else{
-      setUsageLimit(0);
-    
-    }
+
 
 
   }
@@ -306,7 +310,7 @@ if(usageLocal >= uses){
         onChange={(e) => setChat(e.target.value)}
         placeholder="What is your video aboout" />
         <button className="sub-chat" onClick={callOpenAIAPI}>Submit</button>
-        <p className="usage-left">{usageLimit}</p>
+        <p className="usage-left">Uses Left: {usageLimit}</p>
       </div>
     </div>
   )
