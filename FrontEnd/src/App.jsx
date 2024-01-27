@@ -3,6 +3,7 @@ import { MainPage } from './MainPage';
 import { Login } from "./LoginForm"; 
 import { Signup } from "./SignupForm";
 import { MainLoged } from "./MainLogedPage";
+import { ProfilePage } from "./ProfilePage";
 import './app.css';
 
 
