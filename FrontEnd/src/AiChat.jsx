@@ -11,19 +11,11 @@ import axios from "axios";
 
 const openai = new OpenAI({apiKey: import.meta.env.VITE_OPENAI_API_KEY , dangerouslyAllowBrowser: true});
 
-export function AiChat(){
-  const history = useNavigate()
-  const location = useLocation();
-  const {id} = location.state;
-  const {tier} = location.state;
-  const {usage} = location.state;
-  const [usageLocal, setUsageLocal] = useState(usage);
-  const [chatInput, setChatInput] = useState("chat-input");
-  console.log(usageLocal)
+export function AiChat({id, tier, usageLocal, setUsageLocal, uses, usageLimit, setUsageLimit, usage}){
 
-  useEffect(() => {
-    setUsageLocal(usage); // Update the usageLocal state when the usage prop changes
-  }, [usage]);
+  const [chatInput, setChatInput] = useState("chat-input");
+  const history = useNavigate()
+
 
   // Rest of your code...
 
@@ -99,25 +91,7 @@ async function updateUsage(id, usageLocal) {
   const [url, setUrl] = useState("");
   const [showPopup, setShowPopup] = useState(false); // Add state for the pop-up
 
-  let uses = 0;
 
-  if(tier == 1){
-    uses = 5;
-  } else if(tier == 2){
-    uses = 10;
-  } else{
-    uses = 15;
-  }
-
-let firstUse = 0;
-
-if(usageLocal >= uses){
-   firstUse = 0;
-} else {
-   firstUse = uses - usageLocal;
-}
-
-  const [usageLimit, setUsageLimit] = useState(firstUse);
 
 
   async function main1() {
