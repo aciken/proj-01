@@ -1,5 +1,4 @@
 import './nav.css';
-import { Link } from 'react-router-dom';
 import logo from './assets/logo.png';
 import { useState } from 'react';
 
@@ -23,7 +22,7 @@ export function LogedNav({navRes, onChangeNavRes}){
     return (
         <div className="whole-nav">
             <a href="#" className="left-nav-part">
-                <img src={logo} alt="Logo" />
+                <img src={logo} onClick={(e) => e.preventDefault()} alt="Logo" />
             </a>
             <div className="right-nav-part">
             <div className="dropdown" >

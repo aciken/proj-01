@@ -1,7 +1,7 @@
 import { useState, useEffect} from "react"
 import OpenAI from "openai";
 import './AiChat.css';
-import { useLocation,useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 // import cron from "node-cron";
 
@@ -129,6 +129,8 @@ async function updateUsage(id, usageLocal) {
   }
 
   async function callOpenAIAPI() {
+
+    if(chat !== ""){
     if(tier == 1){
       if(usageLocal < 5){
         main1();
@@ -173,8 +175,8 @@ async function updateUsage(id, usageLocal) {
     console.log(`${usageLocal} ${uses}`)
 
 
-
-
+setChat("");
+  }
   }
 
   function handlePopup() {
@@ -281,6 +283,7 @@ async function updateUsage(id, usageLocal) {
         <div className="down-part">
         <input type="text"
         className={`${chatInput}`}
+        value={chat}
         onChange={(e) => setChat(e.target.value)}
         placeholder="What is your video aboout" />
         <button className="sub-chat" onClick={callOpenAIAPI}>Submit</button>
