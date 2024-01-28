@@ -4,8 +4,6 @@ const cors = require('cors');
 const app  = express();
 const cron = require('node-cron');
 const youtube = require('youtube-api');
-const uuid = require('uuid/v4');
-const open = require('open');
 const multer = require('multer');
 const credentials = require('./credentials.json');
 app.use(express.json());
@@ -25,7 +23,7 @@ const uploadVideoFile = multer({
 storage: storage,
 }).single("videoFile");
 
-app.post('upload', uploadVidieoFile, (req,res) => {
+app.post('upload', uploadVideoFile, (req,res) => {
   if(req.file){
     const filename = req.file.filename;
     const {title, description} = req.body;
@@ -45,7 +43,7 @@ const oAuth = youtube.authenticate({
   type: 'oauth',
   client_id: credentials.web.client_id,
   client_secret: credentials.web.client_secret,
-  redirect_url: credentials.web.redirect_uris[0]
+  redirect_uri: credentials.web.redirect_uris[0]
 });
 
 
@@ -201,7 +199,7 @@ wss.on('connection', (ws) => {
   });
 });
 
-cron.schedule('48 16 * * *', async () => {
+cron.schedule('22 14 * * *', async () => {
   try {
     // Assuming `collection` is your Mongoose model
     await collection.updateMany({}, { usage: 0 });

@@ -20,38 +20,38 @@ export function AiChat({id, tier, usageLocal, setUsageLocal, uses, usageLimit, s
   // Rest of your code...
 
 
-useEffect(() => {
-  const ws = new WebSocket('ws://localhost:8080');
+// useEffect(() => {
+//   const ws = new WebSocket('ws://localhost:8080');
 
-  ws.onopen = () => {
-    console.log('WebSocket connection opened');
-  };
+//   ws.onopen = () => {
+//     console.log('WebSocket connection opened');
+//   };
 
-  ws.onerror = (error) => {
-    console.error('WebSocket error:', error);
-  };
+//   ws.onerror = (error) => {
+//     console.error('WebSocket error:', error);
+//   };
 
-  ws.onclose = (event) => {
-    console.log('WebSocket connection closed:', event.code, event.reason);
-  };
+//   ws.onclose = (event) => {
+//     console.log('WebSocket connection closed:', event.code, event.reason);
+//   };
 
-  ws.onmessage = (event) => {
-    console.log('Received message:', event.data);
-    if (event.data === 'usage reset') {
-      setUsageLocal(0);
-      console.log(usageLocal)
-      console.log('Usage was reset!');
-      setUsageLimit(uses)
-    }
+//   ws.onmessage = (event) => {
+//     console.log('Received message:', event.data);
+//     if (event.data === 'usage reset') {
+//       setUsageLocal(0);
+//       console.log(usageLocal)
+//       console.log('Usage was reset!');
+//       setUsageLimit(uses)
+//     }
 
-  };
+//   };
 
-  return () => {
-    if (ws.readyState === WebSocket.OPEN) {
-      ws.close();
-    }
-  };
-}, []);
+//   return () => {
+//     if (ws.readyState === WebSocket.OPEN) {
+//       ws.close();
+//     }
+//   };
+// }, []);
 
 
 
