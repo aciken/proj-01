@@ -3,11 +3,50 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const app  = express();
 const cron = require('node-cron');
+const youtube = require('youtube-api');
+const uuid = require('uuid/v4');
+const open = require('open');
+const multer = require('multer');
+const credentials = require('./credentials.json');
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cors());
 
+const storage = multer.diskStorage({
+  destination: '/',
+  filename(req, file, cb) {
+    const newFilename = `${uuid()}-${file.originalname}`
 
+    cb(null, newFilename);
+  }
+});
+
+const uploadVideoFile = multer({
+storage: storage,
+}).single("videoFile");
+
+app.post('upload', uploadVidieoFile, (req,res) => {
+  if(req.file){
+    const filename = req.file.filename;
+    const {title, description} = req.body;
+    
+    open(oAuth.generateAuthUrl({
+      acces_type: 'offline',
+      scope: 'https://www.googleapis.com/auth/youtube.upload',
+      state: JSON.stringify({
+        filename,
+        title,
+        description})
+    }))
+  }
+})
+
+const oAuth = youtube.authenticate({
+  type: 'oauth',
+  client_id: credentials.web.client_id,
+  client_secret: credentials.web.client_secret,
+  redirect_url: credentials.web.redirect_uris[0]
+});
 
 
 
