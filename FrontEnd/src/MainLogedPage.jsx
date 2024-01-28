@@ -99,8 +99,8 @@ export function MainLoged() {
             {navRes === "main-page" ? (
                 <LogedHero id={id} tier={tier} usageLocal={usageLocal} setUsageLocal={setUsageLocal} uses={uses} usageLimit={usageLimit} setUsageLimit={setUsageLimit} usage={usage}  />
             ) : (
-                <ProfilePage tier={tier} usageLimit={usageLimit} />
-                // <YoutubeUpload />
+                // <ProfilePage tier={tier} usageLimit={usageLimit} />
+                <YoutubeUpload />
             )}
         </div>
     );

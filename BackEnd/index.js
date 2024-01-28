@@ -1,9 +1,16 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+let open;
+
+import('open').then((module) => {
+  open = module.default;
+});
+const { v4: uuid } = require('uuid');
 const app  = express();
 const cron = require('node-cron');
 const youtube = require('youtube-api');
+const fs = require('fs');
 const multer = require('multer');
 const credentials = require('./credentials.json');
 app.use(express.json());
@@ -11,7 +18,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(cors());
 
 const storage = multer.diskStorage({
-  destination: '/',
+  destination: '/uploads',
   filename(req, file, cb) {
     const newFilename = `${uuid()}-${file.originalname}`
 
@@ -23,7 +30,13 @@ const uploadVideoFile = multer({
 storage: storage,
 }).single("videoFile");
 
-app.post('upload', uploadVideoFile, (req,res) => {
+
+app.get('/upload', (req,res) => {
+
+})
+
+app.post('/upload', uploadVideoFile, (req,res) => {
+
   if(req.file){
     const filename = req.file.filename;
     const {title, description} = req.body;
@@ -39,11 +52,40 @@ app.post('upload', uploadVideoFile, (req,res) => {
   }
 })
 
+app.get('/oauth2callback', (req, res) => {
+  console.log('asd')
+  res.send('hello');
+  const {filename, title, description} = JSON.parse(req.query.state);
+
+  oAuth.getToken(req.query.code, (err, tokens) => {
+    if(err){
+      console.log(err);
+      return;
+    }
+
+    oAuth.setCredentials(tokens);
+
+    youtube.videos.insert({
+      resource: {
+        snippet: {title, description},
+        status: {privacyStatus: 'private'}
+      },
+      part: 'snippet, status',
+      media: {
+        body: fs.createReadStream(filename)
+      }
+    }, (err, data) =>{
+      console.log('Done');
+      process.exit();
+    })
+  })
+})
+
 const oAuth = youtube.authenticate({
   type: 'oauth',
   client_id: credentials.web.client_id,
   client_secret: credentials.web.client_secret,
-  redirect_uri: credentials.web.redirect_uris[0]
+  redirect_url: credentials.web.redirect_uris[0]
 });
 
 
