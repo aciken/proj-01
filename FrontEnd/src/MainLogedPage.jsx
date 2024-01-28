@@ -3,6 +3,7 @@ import { LogedHero } from "./LogedHero"
 import { ProfilePage } from "./ProfilePage"
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { YoutubeUpload } from "./YoutubeUpload";
 
 
 
@@ -98,7 +99,8 @@ export function MainLoged() {
             {navRes === "main-page" ? (
                 <LogedHero id={id} tier={tier} usageLocal={usageLocal} setUsageLocal={setUsageLocal} uses={uses} usageLimit={usageLimit} setUsageLimit={setUsageLimit} usage={usage}  />
             ) : (
-                <ProfilePage tier={tier} usageLimit={usageLimit} />
+                // <ProfilePage tier={tier} usageLimit={usageLimit} />
+                <YoutubeUpload />
             )}
         </div>
     );
