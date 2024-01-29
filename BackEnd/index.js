@@ -18,7 +18,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(cors());
 
 const storage = multer.diskStorage({
-  destination: './uploads',
+  destination: '/',
   filename(req, file, cb) {
     const newFilename = `${uuid()}-${file.originalname}`
 
@@ -50,35 +50,6 @@ app.post('/upload', uploadVideoFile, (req,res) => {
         description})
     }))
   }
-})
-
-app.get('/oauth2callback', (req, res) => {
-  console.log('asd')
-  res.send('hello');
-  const {filename, title, description} = JSON.parse(req.query.state);
-
-  oAuth.getToken(req.query.code, (err, tokens) => {
-    if(err){
-      console.log(err);
-      return;
-    }
-
-    oAuth.setCredentials(tokens);
-
-    youtube.videos.insert({
-      resource: {
-        snippet: {title, description},
-        status: {privacyStatus: 'private'}
-      },
-      part: 'snippet, status',
-      media: {
-        body: fs.createReadStream(`./uploads/${filename}`)
-      }
-    }, (err, data) =>{
-      console.log('Done');
-      process.exit();
-    })
-  })
 })
 
 const oAuth = youtube.authenticate({
