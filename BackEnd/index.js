@@ -52,9 +52,12 @@ app.post('/upload', uploadVideoFile, (req,res) => {
   }
 })
 
+app.get('/success', (req, res) => {
+  
+})
+
 app.get('/oauth2callback', (req, res) => {
-  console.log('asd')
-  res.send('hello');
+  res.redirect('http://localhost:5173/success');
   const {filename, title, description} = JSON.parse(req.query.state);
 
   oAuth.getToken(req.query.code, (err, tokens) => {
