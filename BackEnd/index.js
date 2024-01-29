@@ -26,19 +26,18 @@ const storage = multer.diskStorage({
   }
 });
 
-const uploadVideoFile = multer({
-storage: storage,
-}).single("videoFile");
+const upload = multer({
+  storage: storage,
+}).fields([{ name: 'videoFile', maxCount: 1 }, { name: 'thumbnail', maxCount: 1 }]);
 
 
-app.get('/upload', (req,res) => {
+app.post('/upload', upload, (req, res) => {
+  console.log(`${req.files.videoFile}, ${req.files.thumbnail}`)
 
-})
-
-app.post('/upload', uploadVideoFile, (req,res) => {
-
-  if(req.file){
-    const filename = req.file.filename;
+  if(req.files.videoFile && req.files.thumbnail){
+    console.log(req.files.videoFile[0], req.files.thumbnail[0])
+    const filename = req.files.videoFile[0].filename;
+    const thumbnail = req.files.thumbnail[0].filename;
     const {title, description} = req.body;
     
     open(oAuth.generateAuthUrl({
@@ -47,18 +46,19 @@ app.post('/upload', uploadVideoFile, (req,res) => {
       state: JSON.stringify({
         filename,
         title,
-        description})
+        description,
+        thumbnail
+      })
     }))
+  } else{
+    return res.status(400).send('No files were uploaded.');
   }
 })
 
-app.get('/success', (req, res) => {
-  
-})
 
 app.get('/oauth2callback', (req, res) => {
   res.redirect('http://localhost:5173/success');
-  const {filename, title, description} = JSON.parse(req.query.state);
+  const {filename, title, description, thumbnail} = JSON.parse(req.query.state);
 
   oAuth.getToken(req.query.code, (err, tokens) => {
     if(err){
@@ -73,16 +73,37 @@ app.get('/oauth2callback', (req, res) => {
         snippet: {title, description},
         status: {privacyStatus: 'private'}
       },
-      part: 'snippet, status',
+      part: 'snippet,status',
       media: {
         body: fs.createReadStream(`./uploads/${filename}`)
+      },
+    }, (err, data) => {
+      if(err) {
+        console.log(err);
+        return;
       }
-    }, (err, data) =>{
-      console.log('Done');
-      process.exit();
-    })
-  })
-})
+
+      const videoId = data.data.id;
+
+      youtube.thumbnails.set({
+        videoId: videoId,
+        media: {
+          mimeType: 'image/jpeg',
+          body: fs.createReadStream(`./uploads/${thumbnail}`)
+        }
+      }, (err, response) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+
+        console.log('Thumbnail uploaded.');
+        console.log('Done');
+        process.exit();
+      });
+    });
+  });
+});
 
 const oAuth = youtube.authenticate({
   type: 'oauth',
@@ -157,7 +178,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-
+    
 
 
 app.get("/signup", cors(), (req, res) =>{

@@ -8,7 +8,8 @@ export function YoutubeUpload() {
     const [form, setForm] = useState({
     title:"",
     description:"",
-    file:null
+    file:null,
+    thumbnail:null
     })
 
     const handleChange = (e) => {
@@ -20,9 +21,17 @@ export function YoutubeUpload() {
             ...form,
             [e.target.name]: inputValue
         });
+    }
 
-
-
+    const handleThumbnailChange = (e) => {
+        console.log(`Change event on thumbnail`);
+        const thumbnailFile = e.target.files[0];
+        console.log(`Thumbnail file:`, thumbnailFile);
+        
+        setForm({
+            ...form,
+            thumbnail: thumbnailFile
+        });
     }
 
 
@@ -32,12 +41,14 @@ const handleSubmit = (e) => {
 
     const videoData = new FormData();
 
-    console.log(`Title: ${form.title} || Description: ${form.description} || File: ${form.file}`)
+    console.log(`Title: ${form.title} || Description: ${form.description} || File: ${form.file} || Thumbnail: ${form.thumbnail}`)
 
     videoData.append("videoFile", form.file);
     videoData.append("title", form.title);
     videoData.append("description", form.description);
+    videoData.append("thumbnail", form.thumbnail);
 
+    console.log(`${videoData.thumbnail} || ${videoData.videoFile}`)
 
 
     axios.post("http://localhost:3000/upload", videoData)
@@ -75,7 +86,11 @@ const handleSubmit = (e) => {
                     <textarea onChange={handleChange} name="description" id="" cols="30" rows="10" placeholder="Description"></textarea>
                 </div>
                 <div>
-                <input onChange={handleChange} accept='video/mp4' type="file" name="file" placeholder="Add Video File"/>                </div>
+                <input onChange={handleChange} accept='video/mp4' type="file" name="file" placeholder="Add Video File"/>
+                </div>
+                <div>
+                    <input onChange={handleThumbnailChange} accept='image/jpeg' type="file" name="thumbnail" placeholder='Add Thumbnail File' />
+                </div>
                 <button type="submit">Upload Video</button>
             </form>
         </div>
