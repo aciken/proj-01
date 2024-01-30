@@ -11,11 +11,21 @@ const app  = express();
 const cron = require('node-cron');
 const youtube = require('youtube-api');
 const fs = require('fs');
+const path = require('path');
+const FormData = require('form-data');
 const multer = require('multer');
 const credentials = require('./credentials.json');
+const dotenv = require('dotenv').config();
+const OpenAI = require('openai');
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cors());
+const Speech = require('node-speech');
+const axios = require('axios');
+
+
+const openai = new OpenAI({apiKey: process.env.OPEN_API_KEY});
+
 
 const storage = multer.diskStorage({
   destination: './uploads',
@@ -26,9 +36,51 @@ const storage = multer.diskStorage({
   }
 });
 
+const uploadVideoFile = multer({
+  storage: storage,
+  }).single("videoFile");
+
 const upload = multer({
   storage: storage,
 }).fields([{ name: 'videoFile', maxCount: 1 }, { name: 'thumbnail', maxCount: 1 }]);
+
+
+
+app.post('/send', uploadVideoFile, async (req, res) => {
+
+  async function main1(transcriptionText) {
+    const completion = await openai.chat.completions.create({
+      messages: [
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "give me description  in 6 to 12 words on what is this youtube video is aobut acoording to its text:  " + transcriptionText},
+      ],
+      model: "gpt-3.5-turbo",
+    });
+  
+    res.send(completion.choices[0].message.content);
+    console.log(completion.choices[0].message.content);
+  }
+
+  const audioFun=async()=>{
+    const transcription=await openai.audio.transcriptions.create({
+        file:fs.createReadStream(`./uploads/${req.file.filename}`),
+       model:"whisper-1"
+    })
+
+    main1(transcription.text)
+
+
+
+}
+
+audioFun()
+
+
+
+
+})
+
+
 
 
 app.post('/upload', upload, (req, res) => {

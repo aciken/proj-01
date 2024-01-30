@@ -1,7 +1,10 @@
 import './YoutubeUpload.css';
 import { useState } from "react";
 import axios from "axios";
+import OpenAI from "openai";
 
+
+const openai = new OpenAI({apiKey: import.meta.env.VITE_OPENAI_API_KEY , dangerouslyAllowBrowser: true});
 
 export function YoutubeUpload() {
 
@@ -11,6 +14,49 @@ export function YoutubeUpload() {
     file:null,
     thumbnail:null
     })
+
+    const [response, setResponse] = useState("");
+    const [description, setDescription] = useState("");
+    const [url, setUrl] = useState("");
+
+
+    async function main1(chat) {
+        setResponse("Loading...")
+        const completion = await openai.chat.completions.create({
+          messages: [
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": "Make short and attention grabing youtube title for video with this description" + chat},
+          ],
+          model: "gpt-3.5-turbo",
+        });
+    
+        setResponse(completion.choices[0].message.content);
+        console.log(completion.choices[0].message.content);
+      }
+    
+      async function main2(wordNum, chat) {
+        setDescription("Loading...")
+        const completion = await openai.chat.completions.create({
+          messages: [
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": "Make youtube video description with"+ wordNum+ " words from this short description" + chat},
+          ],
+          model: "gpt-3.5-turbo",
+        });
+    
+        setDescription(completion.choices[0].message.content);
+        console.log(completion.choices[0].message.content);
+      }
+    
+      async function imageGen(chat){
+        console.log('imageGen called')
+        const image = await openai.images.generate({ model: "dall-e-3", prompt: "Make youtube thumbnail from this video description " + chat, n:1,size: "1792x1024", });
+        setUrl(image.data[0].url);
+      }
+
+
+
+
 
     const handleChange = (e) => {
         console.log(`Change event on ${e.target.name}`);
@@ -75,15 +121,54 @@ const handleSubmit = (e) => {
     })
 }
 
+const handleSend = (e) => {
+e.preventDefault();
+
+const videoData = new FormData();
+
+videoData.append("videoFile", form.file);
+
+axios.post("http://localhost:3000/send", videoData)
+    .then((res) => { 
+        console.log(res.data);
+
+main1(res.data);
+main2(40, res.data);
+imageGen(res.data);
+
+
+
+    })
+    .catch((err) => {
+        if (err.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log("Error Response Data:", err.response.data);
+            console.log("Error Response Status:", err.response.status);
+            console.log("Error Response Headers:", err.response.headers);
+        } else if (err.request) {
+            // The request was made but no response was received
+            // `err.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in Node.js
+            console.log("Error Request:", err.request);
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', err.message);
+        }
+        console.log("Error Config:", err.config);
+    })
+
+}
+
     return(
         <div className="youtube-upload">
             <h1>Upload Your Video</h1>
-            <form onSubmit={handleSubmit} >
+            <form onSubmit={handleSend} >
                 <div>
-                    <input onChange={handleChange} type="text" name="title" placeholder="Title" />
+                    <input onChange={handleChange} type="text" name="title" placeholder="Title" value={response} />
                 </div>
                 <div>
-                    <textarea onChange={handleChange} name="description" id="" cols="30" rows="10" placeholder="Description"></textarea>
+                    <textarea onChange={handleChange} name="description" id="" cols="30" rows="10" placeholder="Description" value={description}></textarea>
                 </div>
                 <div>
                 <input onChange={handleChange} accept='video/mp4' type="file" name="file" placeholder="Add Video File"/>
@@ -92,7 +177,9 @@ const handleSubmit = (e) => {
                     <input onChange={handleThumbnailChange} accept='image/jpeg' type="file" name="thumbnail" placeholder='Add Thumbnail File' />
                 </div>
                 <button type="submit">Upload Video</button>
+                <button type='submit'>Send Video</button>
             </form>
+            <img className="imageGen" src={url} alt="" />
         </div>
     )
 }
