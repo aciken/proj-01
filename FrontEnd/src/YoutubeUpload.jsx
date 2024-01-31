@@ -1,5 +1,5 @@
 import './YoutubeUpload.css';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import OpenAI from "openai";
 
@@ -21,42 +21,75 @@ export function YoutubeUpload() {
 
 
     async function main1(chat) {
-        setResponse("Loading...")
+
         const completion = await openai.chat.completions.create({
-          messages: [
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": "Make short and attention grabing youtube title for video with this description" + chat},
-          ],
-          model: "gpt-3.5-turbo",
+            messages: [
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": "Make short and attention grabbing YouTube title for video with this description" + chat},
+            ],
+            model: "gpt-3.5-turbo",
         });
-    
+
+
         setResponse(completion.choices[0].message.content);
-        console.log(completion.choices[0].message.content);
-      }
+
+
+
+    }
+
+
     
-      async function main2(wordNum, chat) {
-        setDescription("Loading...")
+    async function main2(wordNum, chat) {
+
         const completion = await openai.chat.completions.create({
-          messages: [
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": "Make youtube video description with"+ wordNum+ " words from this short description" + chat},
-          ],
-          model: "gpt-3.5-turbo",
+            messages: [
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": "Make youtube video description with"+ wordNum+ " words from this short description" + chat},
+            ],
+            model: "gpt-3.5-turbo",
         });
-    
+
+
         setDescription(completion.choices[0].message.content);
+
+ 
         console.log(completion.choices[0].message.content);
-      }
+
+
+
+    }
     
       async function imageGen(chat){
         console.log('imageGen called')
         const image = await openai.images.generate({ model: "dall-e-3", prompt: "Make youtube thumbnail from this video description " + chat, n:1,size: "1792x1024", });
         setUrl(image.data[0].url);
+
+        const response = await axios.get(image.data[0].url, { responseType: 'arraybuffer' });
+        const decoder = new TextDecoder('binary');
+        const binaryString = decoder.decode(response.data);
+
+
+console.log(binaryString)
+        console.log(url)
       }
 
 
 
+    const handleResponseChange = (e) => {
+        console.log(`Change event on ${e.target.name}`);
+        const inputValue = e.target.value;
+        console.log(`Input value:`, inputValue);
+        
+        setResponse(inputValue);
+    }
 
+    const handleDescriptionChange = (e) => {
+        console.log(`Change event on ${e.target.name}`);
+        const inputValue = e.target.value;
+        console.log(`Input value:`, inputValue);
+        
+        setDescription(inputValue);
+    }
 
     const handleChange = (e) => {
         console.log(`Change event on ${e.target.name}`);
@@ -90,8 +123,8 @@ const handleSubmit = (e) => {
     console.log(`Title: ${form.title} || Description: ${form.description} || File: ${form.file} || Thumbnail: ${form.thumbnail}`)
 
     videoData.append("videoFile", form.file);
-    videoData.append("title", form.title);
-    videoData.append("description", form.description);
+    videoData.append("title", response);
+    videoData.append("description", description);
     videoData.append("thumbnail", form.thumbnail);
 
     console.log(`${videoData.thumbnail} || ${videoData.videoFile}`)
@@ -124,6 +157,7 @@ const handleSubmit = (e) => {
 const handleSend = (e) => {
 e.preventDefault();
 
+
 const videoData = new FormData();
 
 videoData.append("videoFile", form.file);
@@ -131,10 +165,12 @@ videoData.append("videoFile", form.file);
 axios.post("http://localhost:3000/send", videoData)
     .then((res) => { 
         console.log(res.data);
+        
+
 
 main1(res.data);
 main2(40, res.data);
-imageGen(res.data);
+// imageGen(res.data);
 
 
 
@@ -163,12 +199,12 @@ imageGen(res.data);
     return(
         <div className="youtube-upload">
             <h1>Upload Your Video</h1>
-            <form onSubmit={handleSend} >
+            <form onSubmit={handleSubmit} >
                 <div>
-                    <input onChange={handleChange} type="text" name="title" placeholder="Title" value={response} />
+                    <input onChange={handleResponseChange} type="text" name="title" placeholder="Title" value={response} />
                 </div>
                 <div>
-                    <textarea onChange={handleChange} name="description" id="" cols="30" rows="10" placeholder="Description" value={description}></textarea>
+                    <textarea onChange={handleDescriptionChange} name="description" id="" cols="30" rows="10" placeholder="Description" value={description}></textarea>
                 </div>
                 <div>
                 <input onChange={handleChange} accept='video/mp4' type="file" name="file" placeholder="Add Video File"/>
@@ -177,7 +213,7 @@ imageGen(res.data);
                     <input onChange={handleThumbnailChange} accept='image/jpeg' type="file" name="thumbnail" placeholder='Add Thumbnail File' />
                 </div>
                 <button type="submit">Upload Video</button>
-                <button type='submit'>Send Video</button>
+                <button onClick={handleSend}>Send Video</button>
             </form>
             <img className="imageGen" src={url} alt="" />
         </div>
